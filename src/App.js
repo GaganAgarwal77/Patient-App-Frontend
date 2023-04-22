@@ -12,6 +12,8 @@ import ViewConsentComponent from './Routes/PatientComponents/ConsentComponent/Vi
 import ConsentRequestsComponentHIP from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponentHIP';
 import ConsentRequestsComponentHIU from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponentHIU';
 import LoginPatientComponent from './Routes/PatientComponents/LoginPatientComponent';
+import ConsentRequestsComponent from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponent';
+import VisitedHospitalsComponent from './Routes/PatientComponents/VisitedHospitalsComponent';
 
 // https://www.youtube.com/watch?v=DQ93TxqKkWo
 function App() {
@@ -33,11 +35,12 @@ function App() {
                 <Route path="/login-patient" component={LoginPatientComponent} />
                 <Route path="/view-patient" component={ViewPatientComponent} />
 
+                <Route path="/visited-hospitals" component={VisitedHospitalsComponent} />
 
+                <Route path="/recieved-consent-requests" component={ConsentRequestsComponent} /> 
                 <Route path="/request-consent" component={CreateConsentRequest} />
                 <Route path="/consent/:consentid" component={ViewConsentComponent} />
                 <Route path="/sent-consent-requests" component={ConsentRequestsComponentHIU} /> 
-                <Route path="/recieved-consent-requests" component={ConsentRequestsComponentHIP} /> 
 
 
                 <Route path="/notfound" component={NotFoundComponent} />

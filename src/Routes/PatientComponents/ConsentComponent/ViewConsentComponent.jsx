@@ -27,52 +27,74 @@ export default class ViewConsentComponent extends Component {
         }
         this.loadPatient = this.loadPatient.bind(this);
         this.loadConsentObject = this.loadConsentObject.bind(this);
-        this.loadConsentTransaction = this.loadConsentTransaction.bind(this);
     }
     componentDidMount() {
         this.loadPatient();
         this.loadConsentObject();
-        this.loadConsentTransaction();
     }
     loadPatient() {
-        PatientService.getPatientById(this.state.id).then(res => {
-            let p = res.data;
-            this.setState({ patient: p });
-            this.setState({
-                id: p.id,
-            }); 
-        }).catch((error) => {
-            if (error.response) {
-                AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/patients');
-            }
-            else if (error.request) console.log(error.request);
-            else console.log(error.message);
-        });
+        // PatientService.getPatientById(this.state.id).then(res => {
+        //     let p = res.data;
+        //     this.setState({ patient: p });
+        //     this.setState({
+        //         id: p.id,
+        //     }); 
+        // }).catch((error) => {
+        //     if (error.response) {
+        //         AlertifyService.alert(error.response.data.message);
+        //         this.props.history.push('/patients');
+        //     }
+        //     else if (error.request) console.log(error.request);
+        //     else console.log(error.message);
+        // });
+        let data = {
+            "firstName": "Ishan",
+            "lastName": "shanware",
+            "emailAddress": "manishpandy014@gmail.com",
+            "ehrbID": "ahdfjkashdjfhjksadh",
+            "password": "password2",
+            "phoneString": "1234677890",
+            "gender": "M",
+            "address": "Delhi"
+        }
+        this.setState({ patient: data });
     } 
     loadConsentObject() {
-        DoctorService.getConsentObjectByConsentID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
-            this.setState({ consentObject: res.data });
-        }).catch((error) => {
-            if (error.response) {
-                AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/patients');
-            }
-            else if (error.request) console.log(error.request);
-            else console.log(error.message);    
-        });
-    }
-    loadConsentTransaction() { 
-        DoctorService.getConsentTransacationByConsentID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
-            this.setState({ transaction: res.data });
-        }).catch((error) => {
-            if (error.response) {
-                AlertifyService.alert(error.response.data.message);
-                this.props.history.push('/patients');
-            }
-            else if (error.request) console.log(error.request);
-            else console.log(error.message);
-        });
+        // PatientService.getConsentRequestByTxnID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
+        //     this.setState({ consentObject: res.data });
+        // }).catch((error) => {
+        //     if (error.response) {
+        //         AlertifyService.alert(error.response.data.message);
+        //         this.props.history.push('/patients');
+        //     }
+        //     else if (error.request) console.log(error.request);
+        //     else console.log(error.message);    
+        // });
+        let data = {
+            "txnID": "jjdhclkdlkhllcd",
+            "hiuName": "dkdkdsdc",
+            "hipName": "sjdsklkdskds",
+            "doctorName": "sdjhjdjkdsc",
+            "consentID": null,
+            "ehrbID": "ishanthegenius",
+            "hiuID": "sadfhjkhasfjkhasd",
+            "hipID": "asdfhkjhasdfhjasdhkf",
+            "doctorID": "dashfjkhasdkjf",
+            "hiType": [
+                "consultation"
+            ],
+            "departments": [
+                "Surgery",
+                "Cardiology"
+            ],
+            "consentDescription": null,
+            "consent_validity": "2023-04-17T06:45:04.259+00:00",
+            "date_from": "2021-03-16T06:45:04.259+00:00",
+            "date_to": "2022-03-18T06:45:04.259+00:00",
+            "callback_url": "http://localhost:8083/api/v1/consent/notify-status",
+            "consent_status": "PENDING"
+        }
+        this.setState({ consentObject: data });
     }
     viewPatient(id) {
         window.localStorage.setItem("patientID", id);
@@ -126,19 +148,19 @@ export default class ViewConsentComponent extends Component {
                     <div className="row">
                         <div className="col-sm-12">
                             <button
-                                className="btn btn-danger"
-                                onClick={() => this.viewPatient(this.state.patient.id)}>
+                                className="btn btn-primary"
+                                onClick={() => this.props.history.push('/recieved-consent-requests')}>
                                 Back </button>
                             <hr />
+                            <button className='btn btn-success mr-2'>Accept</button>
                             <button
-                                className="btn btn-danger"
-                                disabled={this.state.transaction.consent_status === "PENDING"  ? true : false}
-                                onClick={() => this.createDataRequest(this.state.patient.id)}>
-                                Create Data Request </button>
+                                className="btn btn-danger">
+                               Reject </button>
+                            <hr/>
                         </div>
                         <div className="col-lg-6">
                         <PatientDetail
-                            id={patient.id}
+                            id={patient.ehrbID}
                             name={patient.firstName}
                             lastname={patient.lastName}
                             phoneNo={patient.phoneString}
@@ -146,7 +168,6 @@ export default class ViewConsentComponent extends Component {
                             city={patient.address}
                             bornDate={Date("2000-03-25")}
                             gender={patient.gender}
-                            showButtons={true}
                             // array={['id','name','lastname','email','city','bornDate','gender']}
                         />
                         </div>
@@ -154,17 +175,7 @@ export default class ViewConsentComponent extends Component {
 
                         <div className="col-lg-6">
                             <ConsentDetail
-                                id={this.state.consentObject.consent_object_id}
-                                ehrbID={this.state.consentObject.patient_ehrb_id}
-                                doctorID={this.state.consentObject.doctor_ehrb_id}
-                                hiuID={this.state.consentObject.hiu_id}
-                                hipID={this.state.consentObject.hip_id}
-                                hiType={this.state.consentObject.hi_type}
-                                departments={this.state.consentObject.departments}
-                                fromDate = {this.state.consentObject.date_from}
-                                toDate = {this.state.consentObject.date_to}
-                                validityTill = {this.state.consentObject.valdity} 
-                                consentStatus={this.state.transaction.consent_status}
+                                consentObject = {this.state.consentObject}
                                 showButtons={true}
                             />
                         </div>

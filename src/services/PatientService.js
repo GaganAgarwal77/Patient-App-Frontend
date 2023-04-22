@@ -38,6 +38,17 @@ class PatientService {
         return ApiService.post(PATIENT_API_BASE_URL + '/login', patient);
     }
 
+    getConsentRequests(id, token){
+        return ApiService.getAuth('/consent/fetch?ehrbID=' + id, token)   
+    }
+
+    getVisitedHospitals(id, token){
+        return ApiService.getAuth('/discovery/fetch-hospitals?ehrbID=' + id, token)   
+    }
+
+    getConsentRequestByTxnID(id, token){
+        return ApiService.getAuth('/consent/fetch-by-txnID?txnID=' + id, token)
+    }
 
     editPatient(patient) {
         return ApiService.put(PATIENT_API_BASE_URL + '/' + patient.id, patient);
