@@ -24,15 +24,7 @@ export default class NavbarComponent extends Component {
 {window.localStorage.getItem("token") != null &&
 <>
 <a className="nav-link"  href="/visited-hospitals">Visited Hospitals</a>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Consent Requests
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a className="dropdown-item"  href="/recieved-consent-requests">Recieved</a>
-                                    <a className="dropdown-item"  href="/granted-consent-requests">Granted</a>
-                                </div>
-                            </li>  
+<a className="nav-link"  href="/recieved-consent-requests">Consent Requests</a>
                             </>
     }
                         </ul>

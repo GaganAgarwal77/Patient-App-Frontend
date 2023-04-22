@@ -9,8 +9,6 @@ import { Lines } from 'react-preloaders';
 import NavbarComponent from './Navbar/NavbarComponent';
 import CreateConsentRequest from './Routes/PatientComponents/CreateConsentRequest';
 import ViewConsentComponent from './Routes/PatientComponents/ConsentComponent/ViewConsentComponent';
-import ConsentRequestsComponentHIP from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponentHIP';
-import ConsentRequestsComponentHIU from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponentHIU';
 import LoginPatientComponent from './Routes/PatientComponents/LoginPatientComponent';
 import ConsentRequestsComponent from './Routes/PatientComponents/ConsentComponent/ConsentRequestsComponent';
 import VisitedHospitalsComponent from './Routes/PatientComponents/VisitedHospitalsComponent';
@@ -38,9 +36,8 @@ function App() {
                 <Route path="/visited-hospitals" component={VisitedHospitalsComponent} />
 
                 <Route path="/recieved-consent-requests" component={ConsentRequestsComponent} /> 
-                <Route path="/request-consent" component={CreateConsentRequest} />
+                <Route path="/modify-consent-request" component={CreateConsentRequest} />
                 <Route path="/consent/:consentid" component={ViewConsentComponent} />
-                <Route path="/sent-consent-requests" component={ConsentRequestsComponentHIU} /> 
 
 
                 <Route path="/notfound" component={NotFoundComponent} />

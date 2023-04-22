@@ -136,6 +136,52 @@ export default class ViewConsentComponent extends Component {
         window.localStorage.setItem("consentID", consentid);
         this.props.history.push('/receipe-form');
     }
+
+    acceptConsentRequest(){
+        let data = this.state.consentObject;
+        data.consent_status = "ACCEPTED";
+        PatientService.updateConsentRequest(data, window.localStorage.getItem("token")).then(res => {
+            AlertifyService.alert("Consent Request Accepted");
+            this.props.history.push('/recieved-consent-requests');
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
+        });
+    }
+
+    rejectConsentRequest(){
+        let data = this.state.consentObject;
+        data.consent_status = "REJECTED";
+        PatientService.updateConsentRequest(data, window.localStorage.getItem("token")).then(res => {
+            AlertifyService.alert("Consent Request Rejected");
+            this.props.history.push('/recieved-consent-requests');
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
+        });
+    }
+
+    revokeConsentRequest(){
+        let data = this.state.consentObject;
+        data.consent_status = "REVOKED";
+        PatientService.updateConsentRequest(data, window.localStorage.getItem("token")).then(res => {
+            AlertifyService.alert("Consent Request Revoked");
+            this.props.history.push('/recieved-consent-requests');
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
+        });
+    }
+
     render() {
         let {patient} = this.state;
         return (
@@ -152,10 +198,23 @@ export default class ViewConsentComponent extends Component {
                                 onClick={() => this.props.history.push('/recieved-consent-requests')}>
                                 Back </button>
                             <hr />
+                            {this.state.consentObject.consent_status === "PENDING" &&
+                            <>
                             <button className='btn btn-success mr-2'>Accept</button>
+                            <button className='btn btn-warning mr-2' onClick={() => this.props.history.push('/modify-consent-request')}>Modify</button>
                             <button
                                 className="btn btn-danger">
                                Reject </button>
+                               </>}
+                               {this.state.consentObject.consent_status === "ACCEPTED" &&
+                               <>
+                                 <button className='btn btn-danger mr-2' onClick={() => this.props.history.push('/modify-consent-request')}>Revoke</button>
+                                 </>}
+
+                                {this.state.consentObject.consent_status === "REJECTED" &&
+                                <>
+                                <button disabled className='btn btn-secondary'>REJECTED</button>
+                                </>}
                             <hr/>
                         </div>
                         <div className="col-lg-6">

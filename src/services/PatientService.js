@@ -50,6 +50,10 @@ class PatientService {
         return ApiService.getAuth('/consent/fetch-by-txnID?txnID=' + id, token)
     }
 
+    updateConsentRequest(data, token){
+        return ApiService.postAuth('/consent/notify', data, token)
+    }
+
     editPatient(patient) {
         return ApiService.put(PATIENT_API_BASE_URL + '/' + patient.id, patient);
     }

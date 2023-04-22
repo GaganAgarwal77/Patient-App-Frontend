@@ -16,48 +16,56 @@ export default class CreateConsentRequest extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            id: window.localStorage.getItem("patientID"),
-
-            patientid: window.localStorage.getItem("patientID"),
-            patient: null,
-
-            doctors: [],
-            doctorid: window.localStorage.getItem("doctorID"),
-            doctor: null,
-
-            hospitals: [],
-            hiuId: '',
-            hiu: null,
-            hipId: '',
-            hip: null,
+            consentid: window.localStorage.getItem("consentID"),
 
             hiType: "",
-            department:"",
+            departments:"",
 
             dateFrom: new Date(),
             dateTo: new Date(),
             valdityTill: new Date()
         }
-        this.getAllDoctors()
-        this.getPatient()
-        this.getAllHospitals()
     }
     componentDidMount() {
+        this.loadConsentObject();
     }
-    getAllDoctors() {
-        DoctorService.getDoctors().then((res) => {
-            this.setState({ doctors: res.data.doctors })
-        });
-    }
-    getPatient(){
-        PatientService.getPatientById(this.state.id).then((res) => {
-            this.setState({ patient: res.data })
-        });
-    }
-    getAllHospitals() {
-        DoctorService.getHospitals().then(res => {
-            this.setState({ hospitals: res.data.hospitals });
-        });
+
+    loadConsentObject() {
+        // PatientService.getConsentRequestByTxnID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
+        //     this.setState({ consentObject: res.data });
+        // }).catch((error) => {
+        //     if (error.response) {
+        //         AlertifyService.alert(error.response.data.message);
+        //         this.props.history.push('/patients');
+        //     }
+        //     else if (error.request) console.log(error.request);
+        //     else console.log(error.message);    
+        // });
+        let data = {
+            "txnID": "jjdhclkdlkhllcd",
+            "hiuName": "dkdkdsdc",
+            "hipName": "sjdsklkdskds",
+            "doctorName": "sdjhjdjkdsc",
+            "consentID": null,
+            "ehrbID": "ishanthegenius",
+            "hiuID": "sadfhjkhasfjkhasd",
+            "hipID": "asdfhkjhasdfhjasdhkf",
+            "doctorID": "dashfjkhasdkjf",
+            "hiType": [
+                "consultation"
+            ],
+            "departments": [
+                "Surgery",
+                "Cardiology"
+            ],
+            "consentDescription": null,
+            "consent_validity": "2023-04-17T06:45:04.259+00:00",
+            "date_from": "2021-03-16T06:45:04.259+00:00",
+            "date_to": "2022-03-18T06:45:04.259+00:00",
+            "callback_url": "http://localhost:8083/api/v1/consent/notify-status",
+            "consent_status": "PENDING"
+        }
+        this.setState({ consentObject: data, hiType: data.hiType.toString(), departments: data.departments.toString() ,dateFrom: new Date(data.date_from), dateTo: new Date(data.date_to), valdityTill: new Date(data.consent_validity) });
     }
 
     viewPatient(id) {
@@ -71,51 +79,32 @@ export default class CreateConsentRequest extends Component {
         } else if (values.hiType.length < 3) {
             errors.hiType = 'Enter at least 3 Characters in hiType';
         }
-        if (!values.department) {
-            errors.department = 'Enter department';
-        } else if (values.department.length < 3) {
-            errors.department = 'Enter at least 3 Characters in department';
+        if (!values.departments) {
+            errors.departments = 'Enter departments';
+        } else if (values.departments.length < 3) {
+            errors.departments = 'Enter at least 3 Characters in departments';
         }
         return errors;
     }
-    addProblem = () => {
-        // if (this.state.doctorid === '' || this.state.hiuId === '' || this.state.hipId === '' || this.state.hiType === '' || this.state.department === '') {
-        //     AlertifyService.alert("Fill in the blanks");
-        // } else {
-            if (this.state.id != null) {
-                // in doctors list find doctor with doctorid
-                let doctor = this.state.doctors.find(doctor => doctor.id === this.state.doctorid);
-                let token = window.localStorage.getItem("token");
-                console.log(token);
-                let consentRequest = {
-                    ehrbID: this.state.patient.ehrbID,
-                    doctorID: doctor.doctorEhrbID,
-                    hiuID: this.state.hiuId,
-                    hipID: this.state.hipId,
-                    departments: [this.state.department],
-                    hiType: [this.state.hiType],
-                    permission: {
-                        dateRange : {
-                            from: this.state.dateFrom,
-                            to: this.state.dateTo
-                        },
-                        consent_validity: this.state.valdityTill
-                    }
-                }
-                let consentObj = {
-                    consent_object : consentRequest
-                }
-                console.log(this.state.doctor, consentRequest);
-                console.log(this.state);
-                DoctorService.generateConsentRequest(consentObj, token).then(res => {
-                    console.log(consentObj)
-                    AlertifyService.successMessage("Generating consent request for related patient is ok.. ");
-                    this.viewPatient(this.state.patientid);
-                });
-            } else {
-                AlertifyService.alert("Error..");
+    modifyAndAccept = () => {
+        let data = this.state.consentObject;
+        data.consent_status = "ACCEPTED";
+        data.hiType = this.state.hiType.split(",");
+        data.departments = this.state.departments.split(",");
+        data.date_from = this.state.dateFrom.toISOString();
+        data.date_to = this.state.dateTo.toISOString();
+        data.consent_validity = this.state.valdityTill.toISOString();
+        console.log(data)
+        PatientService.updateConsentRequest(data, window.localStorage.getItem("token")).then(res => {
+            AlertifyService.alert("Consent Request Accepted");
+            this.props.history.push('/recieved-consent-requests');
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
             }
-        // }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);
+        });
     }
     onChangeData(type, e) {
         const addproblem = this.state;
@@ -124,7 +113,7 @@ export default class CreateConsentRequest extends Component {
     }
     render() {
         {console.log(this.state)}
-        let { hiType, department, creationDate, dateFrom, dateTo, valdityTill } = this.state;
+        let { hiType, departments, creationDate, dateFrom, dateTo, valdityTill } = this.state;
         const isWeekday = date => {
             const day = date.getDay(date);
             return day !== 0 && day !== 6;
@@ -136,44 +125,14 @@ export default class CreateConsentRequest extends Component {
                     <hr />
                     <button
                         className="btn btn-sm btn-danger"
-                        onClick={() => this.viewPatient(this.state.id)} >  Back </button>
+                        onClick={() => this.props.history.push("/consent/"+this.state.consentObject.txnID)} >  Back </button>
                     <hr />
                     <Formik
-                        onSubmit={this.addProblem}
+                        onSubmit={this.modifyAndAccept}
                         validate={this.validate}
-                        initialValues={{ hiType, department, creationDate }}
+                        initialValues={{ hiType, departments, creationDate }}
                         enableReinitialize={true} >
                         <Form>
-                        {/* <fieldset className="form-group">
-                            <label>Doctor *</label>
-                            <select className="form-control"
-                                value={this.state.doctor?.firstName}
-                                onChange={e => this.onChangeData('doctorid', e.target.value)} >
-                                {this.state.doctors.map(doctor =>
-                                    <option key={doctor.id} value={doctor.id}>{doctor.firstName}</option>
-                                )}
-                            </select>
-                        </fieldset> */}
-                        <fieldset className="form-group">
-                            <label>HIU *</label>
-                            <select className="form-control"
-                                value={this.state.hiu?.hospitalName}
-                                onChange={e => this.onChangeData('hiuId', e.target.value)} >
-                                {this.state.hospitals.map(hiu =>
-                                    <option key={hiu.hospitalId} value={hiu.hospitalId}>{hiu.hospitalName}</option>
-                                )}
-                            </select>
-                        </fieldset>
-                        <fieldset className="form-group">
-                            <label>HIP *</label>
-                            <select className="form-control"
-                                value={this.state.hip?.hospitalName}
-                                onChange={e => this.onChangeData('hipId', e.target.value)} >
-                                {this.state.hospitals.map(hip =>
-                                    <option key={hip.hospitalId} value={hip.hospitalId}>{hip.hospitalName}</option>
-                                )}
-                            </select>
-                        </fieldset>
                         <fieldset className="form-group">
                                 <label>hiType:</label>
                                 <Field
@@ -185,14 +144,14 @@ export default class CreateConsentRequest extends Component {
                                 <ErrorMessage name="hiType" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
                             <fieldset className="form-group">
-                                <label>department:</label>
+                                <label>departments:</label>
                                 <Field
                                     className="form-control"
                                     type="text"
-                                    name="department"
-                                    value={department}
-                                    onChange={e => this.onChangeData('department', e.target.value)} />
-                                <ErrorMessage name="department" component="div" className="alert alert-danger text-danger" />
+                                    name="departments"
+                                    value={departments}
+                                    onChange={e => this.onChangeData('departments', e.target.value)} />
+                                <ErrorMessage name="departments" component="div" className="alert alert-danger text-danger" />
                             </fieldset>
                                 <div className='d-flex'>
                             <fieldset className="form-group">
@@ -203,7 +162,6 @@ export default class CreateConsentRequest extends Component {
                                     showTimeInput
                                     selected={dateFrom}
                                     onChange={e => this.onChangeData('dateFrom', e)}
-                                    filterDate={isWeekday}          // disable weekend
                                     timeIntervals={15}              // time range around 15 min
                                     //showWeekNumbers               // show week number
                                     timeFormat="HH:mm"              // show time format
@@ -218,7 +176,6 @@ export default class CreateConsentRequest extends Component {
                                     showTimeInput
                                     selected={dateTo}
                                     onChange={e => this.onChangeData('dateTo', e)}
-                                    filterDate={isWeekday}          // disable weekend
                                     timeIntervals={15}              // time range around 15 min
                                     //showWeekNumbers               // show week number
                                     timeFormat="HH:mm"              // show time format
@@ -233,7 +190,6 @@ export default class CreateConsentRequest extends Component {
                                     showTimeInput
                                     selected={valdityTill}
                                     onChange={e => this.onChangeData('valdityTill', e)}
-                                    filterDate={isWeekday}          // disable weekend
                                     timeIntervals={15}              // time range around 15 min
                                     //showWeekNumbers               // show week number
                                     timeFormat="HH:mm"              // show time format
