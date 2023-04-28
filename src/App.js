@@ -28,7 +28,7 @@ function App() {
           </a>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={AddPatientComponent} />
+                <Route path="/" exact component={LoginPatientComponent} />
                 <Route path="/add-patient" component={AddPatientComponent} />
                 <Route path="/login-patient" component={LoginPatientComponent} />
                 <Route path="/view-patient" component={ViewPatientComponent} />
