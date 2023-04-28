@@ -31,7 +31,8 @@ class LoginPatientComponent extends Component {
                     window.localStorage.setItem("ehrbID", res.data.ehrbID);
                     this.setState({ message: res.data.message });
                     alertify.success("Patient Login Succesfull");
-                    window.location.reload()
+                    this.props.history.push('/recieved-consent-requests');
+                    window.location.reload();
                 }).catch((error) => {
                     console.log(error.response)
                     if (error.response) {
@@ -67,8 +68,12 @@ class LoginPatientComponent extends Component {
                         </div>
                         <button className="btn btn-success" type="button" onClick={this.saveUser}>Login</button>
                     </form>
-                    <button className='btn btn-primary mt-2'
-                        onClick={() => this.props.history.push('/add-patient')}> Not Registered? Sign Up </button>
+                    {/* <button className='btn btn-primary mt-2'
+                        onClick={() => this.props.history.push('/add-patient')}> Not Registered? Sign Up </button> */}
+                </div>
+                <div className="col"></div>
+                <div className="col-lg-3">
+                    <img style={{ height: 200 }} src="https://i1.wp.com/www.nosinmiubuntu.com/wp-content/uploads/2013/02/New-Database.png?w=770" alt="" />
                 </div>
             </div>
         );

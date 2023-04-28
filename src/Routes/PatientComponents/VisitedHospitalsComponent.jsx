@@ -22,24 +22,24 @@ class VisitedHospitalsComponent extends Component {
         this.getVisitedHospitals();
     }
     getVisitedHospitals() {
-        // PatientService.getVisitedHospitals(this.state.id, window.localStorage.getItem("token")).then(res => {
-        //     let hospitals = res.data.hospitals;
-        //     console.log(hospitals)
-        //     this.setState({ hospitals: hospitals });
-        // })
-        let data = {
-            "hospitals": [
-                {
-                    "visitID": "8b532ee1-468f-40a5-82ee-a3f578b97f79",
-                    "ehrbID": "gagan",
-                    "hospitalID": "123-2314-4121",
-                    "hospitalName": "hospital",
-                    "timestamp": "2023-03-17T06:45:04.259+00:00",
-                    "department": "cardiology"
-                }
-            ]
-        }
-        this.setState({ hospitals: data.hospitals });
+        PatientService.getVisitedHospitals(this.state.id, window.localStorage.getItem("token")).then(res => {
+            let hospitals = res.data.hospitals;
+            console.log(hospitals)
+            this.setState({ hospitals: hospitals });
+        })
+        // let data = {
+        //     "hospitals": [
+        //         {
+        //             "visitID": "8b532ee1-468f-40a5-82ee-a3f578b97f79",
+        //             "ehrbID": "gagan",
+        //             "hospitalID": "123-2314-4121",
+        //             "hospitalName": "hospital",
+        //             "timestamp": "2023-03-17T06:45:04.259+00:00",
+        //             "department": "cardiology"
+        //         }
+        //     ]
+        // }
+        // this.setState({ hospitals: data.hospitals });
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
     filterConsents(value) {

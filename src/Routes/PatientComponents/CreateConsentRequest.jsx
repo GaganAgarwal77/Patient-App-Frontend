@@ -31,41 +31,41 @@ export default class CreateConsentRequest extends Component {
     }
 
     loadConsentObject() {
-        // PatientService.getConsentRequestByTxnID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
-        //     this.setState({ consentObject: res.data });
-        // }).catch((error) => {
-        //     if (error.response) {
-        //         AlertifyService.alert(error.response.data.message);
-        //         this.props.history.push('/patients');
-        //     }
-        //     else if (error.request) console.log(error.request);
-        //     else console.log(error.message);    
-        // });
-        let data = {
-            "txnID": "jjdhclkdlkhllcd",
-            "hiuName": "dkdkdsdc",
-            "hipName": "sjdsklkdskds",
-            "doctorName": "sdjhjdjkdsc",
-            "consentID": null,
-            "ehrbID": "ishanthegenius",
-            "hiuID": "sadfhjkhasfjkhasd",
-            "hipID": "asdfhkjhasdfhjasdhkf",
-            "doctorID": "dashfjkhasdkjf",
-            "hiType": [
-                "consultation"
-            ],
-            "departments": [
-                "Surgery",
-                "Cardiology"
-            ],
-            "consentDescription": null,
-            "consent_validity": "2023-04-17T06:45:04.259+00:00",
-            "date_from": "2021-03-16T06:45:04.259+00:00",
-            "date_to": "2022-03-18T06:45:04.259+00:00",
-            "callback_url": "http://localhost:8083/api/v1/consent/notify-status",
-            "consent_status": "PENDING"
-        }
-        this.setState({ consentObject: data, hiType: data.hiType.toString(), departments: data.departments.toString() ,dateFrom: new Date(data.date_from), dateTo: new Date(data.date_to), valdityTill: new Date(data.consent_validity) });
+        PatientService.getConsentRequestByTxnID(this.state.consentid, window.localStorage.getItem("token")).then(res => {
+            let data = res.data;
+            this.setState({ consentObject: data, hiType: data.hiType.toString(), departments: data.departments.toString() ,dateFrom: new Date(data.date_from), dateTo: new Date(data.date_to), valdityTill: new Date(data.consent_validity) });
+        }).catch((error) => {
+            if (error.response) {
+                AlertifyService.alert(error.response.data.message);
+                this.props.history.push('/patients');
+            }
+            else if (error.request) console.log(error.request);
+            else console.log(error.message);    
+        });
+        // let data = {
+        //     "txnID": "jjdhclkdlkhllcd",
+        //     "hiuName": "dkdkdsdc",
+        //     "hipName": "sjdsklkdskds",
+        //     "doctorName": "sdjhjdjkdsc",
+        //     "consentID": null,
+        //     "ehrbID": "ishanthegenius",
+        //     "hiuID": "sadfhjkhasfjkhasd",
+        //     "hipID": "asdfhkjhasdfhjasdhkf",
+        //     "doctorID": "dashfjkhasdkjf",
+        //     "hiType": [
+        //         "consultation"
+        //     ],
+        //     "departments": [
+        //         "Surgery",
+        //         "Cardiology"
+        //     ],
+        //     "consentDescription": null,
+        //     "consent_validity": "2023-04-17T06:45:04.259+00:00",
+        //     "date_from": "2021-03-16T06:45:04.259+00:00",
+        //     "date_to": "2022-03-18T06:45:04.259+00:00",
+        //     "callback_url": "http://localhost:8083/api/v1/consent/notify-status",
+        //     "consent_status": "PENDING"
+        // }
     }
 
     viewPatient(id) {

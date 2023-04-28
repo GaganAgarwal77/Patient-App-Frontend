@@ -10,7 +10,7 @@ class PatientService {
     }
 
     getPatientById(id) {
-        return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-details?patientID=' + id);
+        return ApiService.getOneById(PATIENT_API_BASE_URL + '/get-by-ehrb?ehrbID=' + id);
     }
 
     // fetchPatientByEmail(email) {
@@ -47,7 +47,7 @@ class PatientService {
     }
 
     getConsentRequestByTxnID(id, token){
-        return ApiService.getAuth('/consent/fetch-by-txnID?txnID=' + id, token)
+        return ApiService.getAuth('/consent/get-by-txn?txnID=' + id, token)
     }
 
     updateConsentRequest(data, token){

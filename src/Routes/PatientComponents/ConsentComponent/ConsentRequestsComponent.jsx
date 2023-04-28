@@ -23,40 +23,40 @@ class ConsentRequestsComponent extends Component {
         this.getConsents();
     }
     getConsents() {
-        // PatientService.getConsentRequests(this.state.id, window.localStorage.getItem("token")).then(res => {
-        //     let consents = res.data.consentReqs;
-        //     console.log(consents)
-        //     this.setState({ consentObjects: consents });
-        // })
-        let data = {
-            "consentReqs": [
-                {
-                    "txnID": "jjdhclkdlkhllcd",
-                    "hiuName": "dkdkdsdc",
-                    "hipName": "sjdsklkdskds",
-                    "doctorName": "sdjhjdjkdsc",
-                    "consentID": null,
-                    "ehrbID": "ishanthegenius",
-                    "hiuID": "sadfhjkhasfjkhasd",
-                    "hipID": "asdfhkjhasdfhjasdhkf",
-                    "doctorID": "dashfjkhasdkjf",
-                    "hiType": [
-                        "consultation"
-                    ],
-                    "departments": [
-                        "Surgery",
-                        "Cardiology"
-                    ],
-                    "consentDescription": null,
-                    "consent_validity": "2023-03-17T06:45:04.259+00:00",
-                    "date_from": "2023-03-17T06:45:04.259+00:00",
-                    "date_to": "2023-03-17T06:45:04.259+00:00",
-                    "callback_url": "http://localhost:8083/api/v1/consent/notify-status",
-                    "consent_status": "PENDING"
-                }
-            ]
-        }
-        this.setState({ consentObjects: data.consentReqs });
+        PatientService.getConsentRequests(this.state.id, window.localStorage.getItem("token")).then(res => {
+            let consents = res.data.consentReqs;
+            console.log(consents)
+            this.setState({ consentObjects: consents });
+        })
+        // let data = {
+        //     "consentReqs": [
+        //         {
+        //             "txnID": "jjdhclkdlkhllcd",
+        //             "hiuName": "dkdkdsdc",
+        //             "hipName": "sjdsklkdskds",
+        //             "doctorName": "sdjhjdjkdsc",
+        //             "consentID": null,
+        //             "ehrbID": "ishanthegenius",
+        //             "hiuID": "sadfhjkhasfjkhasd",
+        //             "hipID": "asdfhkjhasdfhjasdhkf",
+        //             "doctorID": "dashfjkhasdkjf",
+        //             "hiType": [
+        //                 "consultation"
+        //             ],
+        //             "departments": [
+        //                 "Surgery",
+        //                 "Cardiology"
+        //             ],
+        //             "consentDescription": null,
+        //             "consent_validity": "2023-03-17T06:45:04.259+00:00",
+        //             "date_from": "2023-03-17T06:45:04.259+00:00",
+        //             "date_to": "2023-03-17T06:45:04.259+00:00",
+        //             "callback_url": "http://localhost:8083/api/v1/consent/notify-status",
+        //             "consent_status": "PENDING"
+        //         }
+        //     ]
+        // }
+        // this.setState({ consentObjects: data.consentReqs });
     }
     onChangeSearchByStatusOrDate = (e) => { this.filterConsents(e.target.value); }
     filterConsents(value) {
