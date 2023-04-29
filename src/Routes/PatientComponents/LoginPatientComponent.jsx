@@ -56,7 +56,7 @@ class LoginPatientComponent extends Component {
         return (
             <div className="row">
                 <div className="col-sm-8">
-                    <h2 className="text-center">LOGIN</h2>
+                    <h2 className="text-center">LOGIN PATIENT</h2>
                     <form>
                         <div className="form-group">
                             <label>Email:</label>

@@ -16,9 +16,7 @@ export default class NavbarComponent extends Component {
                             <a className="nav-link"  href="/add-patient">Register</a>} */}
                             {window.localStorage.getItem("token") == null &&
                             <a className="nav-link"  href="/login-patient">Login</a>}
-                        {window.localStorage.getItem("token") != null &&
-                            <a className="nav-link" href={"/view-doctor/"+window.localStorage.getItem("doctorID")}>Doctor Profile</a>
-                        }
+
                                                     {window.localStorage.getItem("token") != null &&
                             <a className="nav-link" type="submit" onClick={() => {window.localStorage.removeItem("token");window.location.reload()}}>Logout</a>}
 {window.localStorage.getItem("token") != null &&
