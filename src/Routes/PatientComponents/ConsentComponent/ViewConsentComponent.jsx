@@ -212,6 +212,7 @@ export default class ViewConsentComponent extends Component {
                                </>}
                                {this.state.consentObject.consent_status === "ACCEPTED" &&
                                <>
+                                <button className='btn btn-warning mr-2' onClick={() => this.props.history.push('/modify-consent-request')}>Modify</button>
                                  <button className='btn btn-danger mr-2' onClick={this.revokeConsentRequest}>Revoke</button>
                                  </>}
 
