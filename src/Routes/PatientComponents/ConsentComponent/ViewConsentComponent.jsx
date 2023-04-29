@@ -27,6 +27,9 @@ export default class ViewConsentComponent extends Component {
         }
         this.loadPatient = this.loadPatient.bind(this);
         this.loadConsentObject = this.loadConsentObject.bind(this);
+        this.acceptConsentRequest = this.acceptConsentRequest.bind(this);
+        this.rejectConsentRequest = this.rejectConsentRequest.bind(this);
+        this.revokeConsentRequest = this.revokeConsentRequest.bind(this);
     }
     componentDidMount() {
         this.loadPatient();
