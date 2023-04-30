@@ -86,7 +86,7 @@ class VisitedHospitalsComponent extends Component {
                                 <th>Visit ID</th>
                                 <th>Hospital ID</th>
                                 <th>Hospital Name</th>
-                                <th>Department</th>
+                                {/* <th>Department</th> */}
                                 <th>Timestamp</th>
                             </tr>
                         </thead>
@@ -97,7 +97,7 @@ class VisitedHospitalsComponent extends Component {
                                     <td>{hospital.visitID}</td>
                                     <td>{hospital.hospitalID}</td>
                                     <td>{hospital.hospitalName}</td>
-                                    <td>{hospital.department}</td>
+                                    {/* <td>{hospital.department}</td> */}
                                     <td>
                                         <Moment format="YYYY/MM/DD HH:mm">
                                             {hospital.timestamp}
