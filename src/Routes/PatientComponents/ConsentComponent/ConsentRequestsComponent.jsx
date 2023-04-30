@@ -117,9 +117,9 @@ class ConsentRequestsComponent extends Component {
                     <table className="table table-bordered table-sm table-dark table-hover">
                         <thead>
                             <tr>
-                                <th>Doctor ID</th>
-                                <th>HIU ID</th>
-                                <th>HIP ID</th>
+                                <th>Doctor Name</th>
+                                <th>HIU Name</th>
+                                <th>HIP Name</th>
                                 <th>Date From</th>
                                 <th>Date To</th>
                                 <th>Valid Till</th>
@@ -131,9 +131,9 @@ class ConsentRequestsComponent extends Component {
                             {console.log(this.state)}
                             {this.state.consentObjects.map((consentObject, index) =>
                                 <tr className="bg-default" key={consentObject.txnID}>
-                                    <td>{consentObject.doctorID}</td>
-                                    <td>{consentObject.hiuID}</td>
-                                    <td>{consentObject.hipID}</td>
+                                    <td>{consentObject.doctorName}</td>
+                                    <td>{consentObject.hiuName}</td>
+                                    <td>{consentObject.hipName}</td>
                                     <td>
                                         <Moment format="YYYY/MM/DD HH:mm">
                                             {consentObject.date_from}
@@ -153,32 +153,10 @@ class ConsentRequestsComponent extends Component {
                                         {consentObject.consent_status}
                                     </td>
                                     <td>
-                                        <div className="btn-group" role="group">
-                                            <button id="btnGroupDrop1"
-                                                type="button"
-                                                className="btn btn-sm btn-secondary dropdown-toggle"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"> Actions </button>
-
-                                            <div className="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                <button
-                                                    className="dropdown-item"
+                                    <button
+                                                    className="btn btn-primary"
                                                     onClick={() => this.viewConsent(consentObject.txnID)} >
                                                     View </button>
-                                                <div className="dropdown-divider"></div>
-                                                <button
-                                                    className="dropdown-item"
-                                                    data-toggle="modal" data-target="#consentModal"
-                                                    onClick={() => this.viewQuickly(consentObject)} >
-                                                    View Quickly </button>
-                                                <div className="dropdown-divider"></div>
-                                                <button
-                                                    className="dropdown-item"
-                                                    onClick={() => this.deleteConsent(consentObject.txnID)} >
-                                                    Delete </button>
-                                            </div>
-                                        </div>
                                     </td>
                                 </tr>
                             )}
